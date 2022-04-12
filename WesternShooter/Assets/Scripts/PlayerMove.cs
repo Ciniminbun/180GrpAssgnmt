@@ -10,7 +10,8 @@ public class PlayerMove : MonoBehaviour
 
     public int health;
     public float moveSpeed;
-    public float jumpForce;
+    public float jumpHeight;
+    public float gravity = -16f;
 
     // Start is called before the first frame update
     void Start()
@@ -42,12 +43,14 @@ public class PlayerMove : MonoBehaviour
             isGrnd = false;
         }
 
+        Vector3 tempVel = rb.velocity;
+
         if (Input.GetKey("space") && isGrnd)
         {
-            Vector3 temp = rb.velocity;
-            temp.y = jumpForce;
-            rb.velocity = temp;
+            tempVel.y = Mathf.Sqrt(jumpHeight * -2 * Physics.gravity.y);
         }
+
+        rb.velocity = tempVel;
 
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
