@@ -50,7 +50,7 @@ public class PlayerMove : MonoBehaviour
             tempVel.y = Mathf.Sqrt(jumpHeight * -2 * Physics.gravity.y);
         }
 
-        rb.velocity = tempVel;
+        rb.velocity = tempVel; // note
 
         float xInput = Input.GetAxis("Horizontal");
         float zInput = Input.GetAxis("Vertical");
