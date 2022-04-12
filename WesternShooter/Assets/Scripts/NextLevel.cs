@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NextLevel : MonoBehaviour
 {
@@ -15,23 +16,12 @@ public class NextLevel : MonoBehaviour
     {
        instance = this;
        DontDestroyOnLoad(player);
-       DontDestroyOnLoad(this.GameObject);
-       currentScene = SceneManager.GetActiveScene().buildIndex; 
+       DontDestroyOnLoad(this.gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void switchScene(int sceneNumber)
+    public void LoadScene(int sceneNumber)
     {
         SceneManager.LoadScene(sceneNumber);
-        player.transform.position = new Vector3(0f,1f,0f);
-    }
-    public void loadNextScene()
-    {
-        currentScene += 1;
-        SceneManager.LoadScene(currentScene);
+        player.transform.position = new Vector3(0f, 1f, 0f);
     }
 }

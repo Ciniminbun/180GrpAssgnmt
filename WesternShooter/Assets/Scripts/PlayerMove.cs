@@ -31,6 +31,11 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        
+    }
+
     private void InputMove()
     {
         RaycastHit hit;
@@ -57,6 +62,8 @@ public class PlayerMove : MonoBehaviour
         Vector3 move = transform.right * xInput + transform.forward * zInput;
         transform.position += move * moveSpeed * Time.deltaTime;
     }
+
+
 
     private void Respawn()
     {
