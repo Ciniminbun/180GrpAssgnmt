@@ -14,12 +14,26 @@ public class EnemyMove : MonoBehaviour
     private Vector3 leftPos;
     private Vector3 rightPos;
     private bool goingLeft = true;
+    public GameObject projectilePrefab;
+    public float timeBetweenShots;
+    public float startDelay;
     // Start is called before the first frame update
     void Start()
     {
         leftPos = leftPoint.transform.position;
         rightPos = rightPoint.transform.position;
+
+        InvokeRepeating("SpawnProjectile", startDelay, timeBetweenShots);
     }
+    public void SpawnProjectile()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+        if (projectile.GetComponent<Bullets>())
+        {
+            projectile.GetComponent<Bullets>().goingLeft = goingLeft;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
