@@ -96,7 +96,7 @@ public class PlayerMove : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
-        RecoilAnimation();
+        StartCoroutine("RecoilAnimation");
         Invoke("ResetShot", 60f / gunRPM);
     }
 
@@ -115,6 +115,7 @@ public class PlayerMove : MonoBehaviour
     private void Reload()
     {
         gunReloading = true;
+        StartCoroutine("ReloadAnimation");
         Invoke("ReloadFinished", reloadSpeed);
     }
 
@@ -125,10 +126,32 @@ public class PlayerMove : MonoBehaviour
         print("reloaded");
     }
 
-    private void RecoilAnimation()
+    IEnumerator RecoilAnimation()
     {
-        gunProp.position += Vector3.back * 2;
-        gunProp.position += Vector3.forward * 2;
+        float recoilDist = 0.1f;
+        gunProp.position += transform.forward * -recoilDist;
+        yield return new WaitForSeconds(0.15f);
+        gunProp.position += transform.forward * recoilDist;
+    }
+
+    IEnumerator ReloadAnimation()
+    {
+        float recoilDist = 0.05f;
+        int bobs = 3;
+        float delay = (reloadSpeed / bobs) / 2;
+        
+        gunProp.Rotate(-5f, 0, 0, Space.Self);
+
+        for (int i = 0; i < bobs; i++)
+        {
+            gunProp.position += gunProp.forward * -recoilDist;
+            yield return new WaitForSeconds(delay);
+            gunProp.position += gunProp.forward * recoilDist;
+            yield return new WaitForSeconds(delay);
+        }
+
+        gunProp.Rotate(5f, 0, 0, Space.Self);
+
     }
 
 }
