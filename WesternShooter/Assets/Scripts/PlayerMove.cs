@@ -9,6 +9,8 @@ public class PlayerMove : MonoBehaviour
     private bool isGrnd;
     private bool canShoot;
     private bool gunReloading;
+    private Transform fpsCam;
+    private Transform gunProp;
 
     public int health;
     public float moveSpeed;
@@ -22,6 +24,8 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fpsCam = gameObject.transform.GetChild(0);
+        gunProp = fpsCam.GetChild(0);
         canShoot = true;
         gunReloading = false;
         rb = GetComponent<Rigidbody>();
@@ -83,7 +87,7 @@ public class PlayerMove : MonoBehaviour
         gunMagActive--;
 
         RaycastHit rayHit;
-        Transform fpsCam = gameObject.transform.GetChild(0);
+        
         Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, Mathf.Infinity);
 
         Transform other = rayHit.transform;
@@ -92,8 +96,8 @@ public class PlayerMove : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
-        print("guh");
-        Invoke("ResetShot", 60 / gunRPM);
+        RecoilAnimation();
+        Invoke("ResetShot", 60f / gunRPM);
     }
 
     private void ResetShot()
@@ -119,6 +123,12 @@ public class PlayerMove : MonoBehaviour
         gunReloading = false;
         gunMagActive = gunMagSize;
         print("reloaded");
+    }
+
+    private void RecoilAnimation()
+    {
+        gunProp.position += Vector3.back * 2;
+        gunProp.position += Vector3.forward * 2;
     }
 
 }
