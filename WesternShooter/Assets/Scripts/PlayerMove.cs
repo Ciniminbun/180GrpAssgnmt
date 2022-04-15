@@ -39,13 +39,11 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKey("r") && !gunReloading && gunMagActive < gunMagSize)
         {
-            print("reloading...");
             Reload();
         }
 
         if (Input.GetMouseButton(0) && canShoot && !gunReloading && gunMagActive > 0)
         {
-            print("bang!");
             Shoot();
         }
 
@@ -103,7 +101,6 @@ public class PlayerMove : MonoBehaviour
     private void ResetShot()
     {
         canShoot = true;
-        print("ioajhf");
     }
 
     private void Respawn()
@@ -123,7 +120,6 @@ public class PlayerMove : MonoBehaviour
     {
         gunReloading = false;
         gunMagActive = gunMagSize;
-        print("reloaded");
     }
 
     IEnumerator RecoilAnimation()
