@@ -28,19 +28,7 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         player.Rotate(Vector3.up * mouseX);
 
-        Shoot();
-
     }
-    private void Shoot()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            RaycastHit hit;
-            Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 1.0f);
-            Vector3 forward = transform.TransformDirection(Vector3.forward) * 50;
-            Debug.DrawRay(transform.position, forward, Color.green);
-            Debug.Log(hit.transform.gameObject.name);
-        }
-    }
+    
 
 }

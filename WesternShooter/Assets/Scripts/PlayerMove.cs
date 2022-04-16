@@ -7,15 +7,23 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody rb;
     private Vector3 spawnPos;
     private bool isGrnd;
+    private bool canShoot;
+    private bool gunReloading;
 
     public int health;
     public float moveSpeed;
     public float jumpHeight;
-    public float gravity = -16f;
+    public int gunAmmo;
+    public int gunRPM;
+    public int gunMagSize;
+    public int gunMagActive;
+    public float reloadSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
+        canShoot = true;
+        gunReloading = false;
         rb = GetComponent<Rigidbody>();
         spawnPos = transform.position;
     }
@@ -25,15 +33,22 @@ public class PlayerMove : MonoBehaviour
     {
         InputMove();
 
+        if (Input.GetKey("r") && !gunReloading && gunMagActive < gunMagSize)
+        {
+            print("reloading...");
+            Reload();
+        }
+
+        if (Input.GetMouseButton(0) && canShoot && !gunReloading && gunMagActive > 0)
+        {
+            print("bang!");
+            Shoot();
+        }
+
         if (transform.position.y < -4)
         {
             Respawn();
         }
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void InputMove()
@@ -48,27 +63,62 @@ public class PlayerMove : MonoBehaviour
             isGrnd = false;
         }
 
-        Vector3 tempVel = rb.velocity;
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
 
+        Vector3 move = transform.right * xInput + transform.forward * zInput;
+        
+        Vector3 tempVel = rb.velocity + (move * moveSpeed * Time.deltaTime);
         if (Input.GetKey("space") && isGrnd)
         {
             tempVel.y = Mathf.Sqrt(jumpHeight * -2 * Physics.gravity.y);
         }
 
         rb.velocity = tempVel;
-
-        float xInput = Input.GetAxis("Horizontal");
-        float zInput = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * xInput + transform.forward * zInput;
-        transform.position += move * moveSpeed * Time.deltaTime;
     }
 
+    private void Shoot()
+    {
+        canShoot = false;
+        gunMagActive--;
 
+        RaycastHit rayHit;
+        Transform fpsCam = gameObject.transform.GetChild(0);
+        Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, Mathf.Infinity);
+
+        Transform other = rayHit.transform;
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(other.gameObject);
+        }
+        print("guh");
+        Invoke("ResetShot", 60 / gunRPM);
+    }
+
+    private void ResetShot()
+    {
+        canShoot = true;
+        print("ioajhf");
+    }
 
     private void Respawn()
     {
         transform.position = spawnPos;
         rb.velocity = new Vector3(0, 0, 0);
+    }
+
+    private void Reload()
+    {
+        gunReloading = true;
+        Invoke("ReloadFinished", reloadSpeed);
+    }
+
+    private void ReloadFinished()
+    {
+        gunReloading = false;
+        gunMagActive = gunMagSize;
+        print("reloaded");
     }
 
 }
