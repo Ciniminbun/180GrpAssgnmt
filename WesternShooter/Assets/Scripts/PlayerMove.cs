@@ -95,8 +95,8 @@ public class PlayerMove : MonoBehaviour
         gunMagActive--;
 
         RaycastHit rayHit;
-        
         Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, Mathf.Infinity);
+
         if (rayHit.collider != null)
         {
             Transform other = rayHit.transform;
