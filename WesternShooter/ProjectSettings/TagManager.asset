@@ -7,6 +7,11 @@ TagManager:
   - Bullet
   - Enemy
   - Exit
+  - PU_Health
+  - PU_Overflow
+  - PU_QuickFire
+  - PU_SpeedBoost
+  - Zombie
   layers:
   - Default
   - TransparentFX

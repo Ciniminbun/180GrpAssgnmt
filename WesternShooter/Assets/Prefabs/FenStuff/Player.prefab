@@ -119,7 +119,7 @@ MonoBehaviour:
   jumpHeight: 3
   gunAmmo: 999
   gunRPM: 140
-  gunMagSize: 6
+  gunMagSize: 12
   gunMagActive: 6
   reloadSpeed: 3
 --- !u!54 &6406451561211135189
