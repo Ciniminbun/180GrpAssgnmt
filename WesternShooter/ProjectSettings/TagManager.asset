@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - PU_Overflow
+  - PU_SpeedBoost
+  - PU_Health
+  - PU_QuickFire
   layers:
   - Default
   - TransparentFX

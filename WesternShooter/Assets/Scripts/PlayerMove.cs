@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -11,8 +12,13 @@ public class PlayerMove : MonoBehaviour
     private bool gunReloading;
     private Transform fpsCam;
     private Transform gunProp;
+    private string[] playerPerks;
+    private string[] allPerks;
 
+    public GameObject explParticle;
+    public Text playerStatusText;
     public int health;
+    public int maxHealth;
     public float moveSpeed;
     public float jumpHeight;
     public int gunAmmo;
@@ -24,12 +30,16 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = maxHealth;
         fpsCam = gameObject.transform.GetChild(0);
         gunProp = fpsCam.GetChild(0);
         canShoot = true;
         gunReloading = false;
         rb = GetComponent<Rigidbody>();
         spawnPos = transform.position;
+        playerPerks = new string[0];
+        allPerks = new string[] { "Overflow", "SpeedBoost", "QuickFire", "Health" };
+        TextUpdate();
     }
 
     // Update is called once per frame
@@ -56,7 +66,7 @@ public class PlayerMove : MonoBehaviour
     private void InputMove()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 1.0f))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 1.5f))
         {
             isGrnd = true;
         }
@@ -87,14 +97,21 @@ public class PlayerMove : MonoBehaviour
         RaycastHit rayHit;
         
         Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, Mathf.Infinity);
-
-        Transform other = rayHit.transform;
-
-        if (other.gameObject.CompareTag("Enemy"))
+        if (rayHit.collider != null)
         {
-            Destroy(other.gameObject);
+            Transform other = rayHit.transform;
+
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                Destroy(other.gameObject);
+            }
+            
         }
+
+        Instantiate(explParticle, rayHit.point, Quaternion.identity);
+
         StartCoroutine("RecoilAnimation");
+        TextUpdate();
         Invoke("ResetShot", 60f / gunRPM);
     }
 
@@ -120,6 +137,7 @@ public class PlayerMove : MonoBehaviour
     {
         gunReloading = false;
         gunMagActive = gunMagSize;
+        TextUpdate();
     }
 
     IEnumerator RecoilAnimation()
@@ -133,7 +151,7 @@ public class PlayerMove : MonoBehaviour
     IEnumerator ReloadAnimation()
     {
         float recoilDist = 0.05f;
-        int bobs = 3;
+        int bobs = gunMagSize;
         float delay = (reloadSpeed / bobs) / 2;
         
         gunProp.Rotate(-5f, 0, 0, Space.Self);
@@ -148,6 +166,152 @@ public class PlayerMove : MonoBehaviour
 
         gunProp.Rotate(5f, 0, 0, Space.Self);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PU_Overflow"))
+        {
+            if (perkDupeCheck(0))
+            {
+                addPerk(0);
+                other.gameObject.SetActive(false);
+            }
+            
+        }
+        else if (other.gameObject.CompareTag("PU_SpeedBoost"))
+        {
+            if (perkDupeCheck(1))
+            {
+                addPerk(1);
+                other.gameObject.SetActive(false);
+            }
+        }
+        else if (other.gameObject.CompareTag("PU_QuickFire"))
+        {
+            if (perkDupeCheck(2))
+            {
+                addPerk(2);
+                other.gameObject.SetActive(false);
+            }
+        }
+        else if (other.gameObject.CompareTag("PU_Health"))
+        {
+            if (perkDupeCheck(3))
+            {
+                addPerk(3);
+                other.gameObject.SetActive(false);
+            }
+        }
+
+        TextUpdate();
+    }
+
+    public void addPerk(int perkId)
+    {
+        
+        string[] newArray = new string[playerPerks.Length + 1];
+        for (int i = 0; i < playerPerks.Length; i++)
+        {
+            newArray[i] = playerPerks[i];
+        }
+        newArray[playerPerks.Length] = allPerks[perkId];
+        playerPerks = newArray;
+
+        if (allPerks[perkId] == "Overflow")
+        {
+            gunMagActive = gunMagSize * 3;
+            StartCoroutine(removePerk(perkId, 0));
+        }
+        else if (allPerks[perkId] == "SpeedBoost")
+        {
+            moveSpeed *= 2;
+            StartCoroutine(removePerk(perkId, 10));
+        }
+        else if (allPerks[perkId] == "QuickFire")
+        {
+            gunRPM *= 2;
+            reloadSpeed /= 2;
+            StartCoroutine(removePerk(perkId, 10));
+        }
+        else if (allPerks[perkId] == "Health")
+        {
+            health = maxHealth;
+        }
+
+
+    }
+
+    private bool perkDupeCheck(int perkId)
+    {
+        bool perkExists = false;
+        for (int i = 0; i < playerPerks.Length; i++)
+        {
+            if (playerPerks[i] == allPerks[perkId])
+            {
+                perkExists = true;
+            }
+        }
+        return !perkExists;
+    }
+
+    IEnumerator removePerk(int perkId, float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        int newLength = 0;
+        for (int i = 0; i < playerPerks.Length; i++)
+        {
+            if (playerPerks[i] != allPerks[perkId])
+            {
+                newLength++;
+            }
+        }
+
+        string[] newArray = new string[newLength];
+        int newArrProg = 0;
+        for (int i = 0; i < playerPerks.Length; i++)
+        {
+            if (playerPerks[i] != allPerks[perkId])
+            {
+                newArray[newArrProg] = playerPerks[i];
+                newArrProg++;
+            }
+        }
+
+        playerPerks = newArray;
+        TextUpdate();
+
+        if (allPerks[perkId] == "Overflow")
+        {
+
+        }
+        else if (allPerks[perkId] == "SpeedBoost")
+        {
+            moveSpeed /= 2;
+        }
+        else if (allPerks[perkId] == "QuickFire")
+        {
+            gunRPM /= 2;
+            reloadSpeed *= 2;
+        }
+        else if (allPerks[perkId] == "Health")
+        {
+
+        }
+
+    }
+
+    private void TextUpdate()
+    {
+        string comtxt = "HEALTH: " + health +
+            "\nAMMO: " + gunMagActive + " / " + gunMagSize + "\n";
+
+        for (int i = 0; i < playerPerks.Length; i++)
+        {
+            comtxt += playerPerks[i] + "\n";
+        }
+        
+        playerStatusText.text = comtxt;
     }
 
 }
