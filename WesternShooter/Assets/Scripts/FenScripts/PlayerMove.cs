@@ -233,6 +233,10 @@ public class PlayerMove : MonoBehaviour
         {
             TakeDamage(10);
         }
+        else if (other.gameObject.CompareTag("Exit"))
+        {
+            Scene_Switch.instance.loadNextScene();
+        }
 
         TextUpdate();
     }
