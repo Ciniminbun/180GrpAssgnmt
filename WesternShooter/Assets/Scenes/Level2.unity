@@ -3369,6 +3369,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3994586102722673370, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
+      propertyPath: awareRange
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3994586102722673372, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
       propertyPath: m_Name
       value: GunZombie (2)
@@ -6215,7 +6219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3994586102722673383, guid: eee8416838f9c4b47a0a1a653f2f94a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.699997
+      value: 33.3
       objectReference: {fileID: 0}
     - target: {fileID: 3994586102722673383, guid: eee8416838f9c4b47a0a1a653f2f94a1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18809,6 +18813,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3994586102722673370, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
+      propertyPath: awareRange
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3994586102722673372, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
       propertyPath: m_Name
       value: GunZombie (4)
@@ -21517,6 +21525,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3994586102722673370, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
+      propertyPath: awareRange
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3994586102722673372, guid: deb7af9c23f37764daa4cbaeded08445, type: 3}
       propertyPath: m_Name
       value: GunZombie (3)
