@@ -317,4 +317,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6406451561211135187}
-  mouseSens: 1000
+  mouseSens: 500

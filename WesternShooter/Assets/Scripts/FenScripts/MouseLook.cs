@@ -28,6 +28,16 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         player.Rotate(Vector3.up * mouseX);
 
+        if (Input.GetKey(KeyCode.Period) && mouseSens < 1000 )
+        {
+            mouseSens += 1;
+        }
+        else if (Input.GetKey(KeyCode.Comma) && mouseSens > 10)
+        {
+            mouseSens -= 1;
+        }
+        
+
     }
     
 

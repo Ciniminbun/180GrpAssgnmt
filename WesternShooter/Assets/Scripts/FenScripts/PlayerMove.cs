@@ -70,6 +70,7 @@ public class PlayerMove : MonoBehaviour
         {
             Respawn();
         }
+
     }
     private bool enemiesPresent()
     {
@@ -376,7 +377,7 @@ public class PlayerMove : MonoBehaviour
     private void TextUpdate()
     {
         // updates player status text
-        string comtxt = "HEALTH: " + health +
+        string comtxt = "press '<' and '>' to control look sensitivity\n" + "HEALTH: " + health +
             "\nAMMO: " + gunMagActive + " / " + gunMagSize + "\n";
 
         for (int i = 0; i < playerPerks.Length; i++)
