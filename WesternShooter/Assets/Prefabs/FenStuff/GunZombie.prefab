@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 9181368153380642317, guid: e8abd25f58cf46645aa915abf2749c98, type: 3}
-  awareRange: 40
+  awareRange: 50
   speed: 0
   health: 30
   hasGun: 1

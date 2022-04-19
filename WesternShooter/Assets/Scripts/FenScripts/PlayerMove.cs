@@ -15,7 +15,6 @@ public class PlayerMove : MonoBehaviour
     private string[] playerPerks;
     private string[] allPerks;
     private bool isInvincible;
-    private bool enemiesPresent;
 
     public GameObject explParticle;
     public Text playerStatusText;
@@ -74,14 +73,15 @@ public class PlayerMove : MonoBehaviour
     }
     private bool enemiesPresent()
     {
-        if(getobjectswitchtag("Zombie").Length <= 0)
-            {
-            enemiesPresent = false;
-            }
-            else
-            {
-            enemiesPresent = true;
-            }
+        if(GameObject.FindGameObjectsWithTag("Zombie").Length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     private void InputMove()
@@ -239,19 +239,19 @@ public class PlayerMove : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Bullet"))
         {
-            TakeDamage(5);
+            TakeDamage(10);
         }
         else if (other.gameObject.CompareTag("Zombie"))
         {
-            TakeDamage(10);
+            TakeDamage(20);
         }
         else if (other.gameObject.CompareTag("Exit"))
         {
-            Scene_Switch.instance.loadNextScene();
-        }
-        else if (other.gameObject.CompareTag("Zombie"))
-        {
-            enemiesPresent = false;
+            if (!(enemiesPresent()))
+            {
+                Scene_Switch.instance.loadNextScene();
+            }
+            
         }
 
         TextUpdate();

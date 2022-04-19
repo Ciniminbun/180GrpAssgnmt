@@ -97,6 +97,7 @@ public class EnemyBehavior : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        transform.position += transform.forward * -0.5f;
     }
 
     private void Shoot()
