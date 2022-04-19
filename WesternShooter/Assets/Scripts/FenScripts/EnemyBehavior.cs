@@ -117,16 +117,11 @@ public class EnemyBehavior : MonoBehaviour
         canShoot = true;
     }
 
-    private GameObject GetRndPU()
+    private Object GetRndPU()
     {
-        // get list of powerup guid's from powerups prefabs folder
-        string[] powerupList = AssetDatabase.FindAssets("t:prefab", new string[] { "Assets/Prefabs/FenStuff/Powerups" });
-        // make rndm for getting a powerup from the list
-        int rndNum = Random.Range(0, powerupList.Length);
-        // chosen guid to asset path
-        string path = AssetDatabase.GUIDToAssetPath(powerupList[rndNum].ToString());
-        // use path to snag prefab
-        GameObject chosenPU = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
+        Object[] powerUpList = Resources.LoadAll("Powerups", typeof(GameObject));
+        int rndNum = Random.Range(0, powerUpList.Length);
+        Object chosenPU = powerUpList[rndNum];
 
         return chosenPU;
     }
